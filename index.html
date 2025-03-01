@@ -15,12 +15,29 @@
             color: #333;
         }
         .container {
-            max-width: 1000px;  /* 增大容器宽度 */
+            max-width: 1000px;
             margin: 0 auto;
             background-color: white;
-            padding: 30px;  /* 增加内边距 */
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .links {
+            margin-bottom: 15px;
+        }
+        .links a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .links a:hover {
+            background-color: #45a049;
         }
         textarea, button {
             width: 100%;
@@ -62,15 +79,21 @@
             background-color: #999 !important;
             cursor: not-allowed;
         }
-        .export-btn {
-            margin-top: 10px;
-            display: block;
+        .footer {
+            margin-top: 20px;
             text-align: center;
-            padding: 10px;
-            background-color: #007BFF;
+        }
+        .footer a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
             color: white;
             border-radius: 5px;
-            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .footer a:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -78,9 +101,14 @@
 
     <div class="container">
         <h1>批量查询 Monad 测试网钱包数据</h1>
+
+        <div class="links">
+            <a href="https://monad-black.vercel.app/" target="_blank">单独查 Monad 余额入口</a>
+        </div>
+
         <textarea id="walletAddresses" placeholder="请输入钱包地址，每个地址一行"></textarea>
         <button id="checkPoints">查询数据</button>
-        <button class="export-btn" id="exportCSV">导出 CSV</button>
+
         <table id="resultContainer">
             <thead>
                 <tr>
@@ -100,6 +128,10 @@
             </thead>
             <tbody></tbody>
         </table>
+
+        <div class="footer">
+            <a href="https://x.com/0xXIAOc" target="_blank">作者推特</a>
+        </div>
     </div>
 
     <script>
@@ -124,9 +156,12 @@
                 if (!address) continue;
 
                 try {
-                    // ✅ 修改 fetch URL 走 Vercel 代理 API
                     const response = await fetch(`/api/wallets/monad_testnet/${address}`);
                     const data = await response.json();
+
+                    if (data.message && data.message.includes("Wallet is not found")) {
+                        throw new Error("钱包未找到");
+                    }
 
                     const lastUpdated = new Date(data.lastUpdated * 1000).toLocaleString() || "N/A";
                     const walletPerformance = data.walletPerformance || {};
@@ -181,6 +216,13 @@
                     `;
                 } catch (error) {
                     console.error("查询失败:", error);
+                    resultContainer.innerHTML += `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td>${address}</td>
+                            <td colspan="10" style="color: red;">无</td>
+                        </tr>
+                    `;
                 }
             }
 
