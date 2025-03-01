@@ -58,12 +58,6 @@
         table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-        .copy-btn {
-            background-color: transparent;
-            border: none;
-            color: blue;
-            cursor: pointer;
-        }
         .loading {
             background-color: #999 !important;
             cursor: not-allowed;
@@ -130,7 +124,8 @@
                 if (!address) continue;
 
                 try {
-                    const response = await fetch(`https://layerhub.xyz/be-api/wallets/monad_testnet/${address}`);
+                    // ✅ 修改 fetch URL 走 Vercel 代理 API
+                    const response = await fetch(`/api/wallets/monad_testnet/${address}`);
                     const data = await response.json();
 
                     const lastUpdated = new Date(data.lastUpdated * 1000).toLocaleString() || "N/A";
