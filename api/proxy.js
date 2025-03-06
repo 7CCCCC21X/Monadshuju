@@ -12,8 +12,11 @@ module.exports = async (req, res) => {
         const response = await fetch(apiUrl, {
             method: "GET",
             headers: {
+                "Host": "claim.elixir.xyz",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Referer": "https://claim.elixir.xyz/",
+                "Origin": "https://claim.elixir.xyz/"
             }
         });
 
