@@ -1,6 +1,6 @@
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
     const { address } = req.query;
     if (!address) {
         return res.status(400).json({ error: "缺少钱包地址参数" });
@@ -12,11 +12,8 @@ export default async function handler(req, res) {
         const response = await fetch(apiUrl, {
             method: "GET",
             headers: {
-                "Host": "claim.elixir.xyz",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-                "Accept": "application/json",
-                "Referer": "https://claim.elixir.xyz/",
-                "Origin": "https://claim.elixir.xyz/"
+                "Accept": "application/json"
             }
         });
 
@@ -30,4 +27,4 @@ export default async function handler(req, res) {
     } catch (error) {
         res.status(500).json({ error: "API 请求失败", details: error.message });
     }
-}
+};
