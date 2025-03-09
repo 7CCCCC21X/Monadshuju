@@ -157,7 +157,7 @@
 
                 try {
                     // 使用 Vercel 部署的代理 API 地址
-                    const response = await fetch(`https://your-vercel-app.vercel.app/api/proxy?address=${address}`);
+                    const response = await fetch(`https://monadshuju.vercel.app/api/proxy?address=${address}`);
                     const data = await response.json();
 
                     if (data.message && data.message.includes("Wallet is not found")) {
